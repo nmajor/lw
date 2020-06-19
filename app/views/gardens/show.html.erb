@@ -9,10 +9,21 @@
     <div class="col">
       <div class="cards">
         <% @garden.plants.each do |plant| %>
+
           <div class="card-category" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url(<%= plant.image_url %>)">
-            <%= plant.name %>
+            <div class="card-title"><%= plant.name %></div>
+            <div class="card-tags">
+              <% plant.tags.each do |tag| %>
+                <span class="badge badge-info"><%= tag.name %></span>
+              <% end %>
+            </div>
+
             <%= link_to plant_path(plant), method: :delete, data: { confirm: 'Are you sure?' }, class: 'card-remove-link' do %>
               <i class="fas fa-trash"></i>
+            <% end %>
+
+            <%= link_to new_plant_tag_path(plant), class: 'card-add-tag-link' do %>
+              <i class="fas fa-tag"></i>
             <% end %>
           </div>
 
@@ -30,6 +41,7 @@
       <h4>Add a new plant</h4>
       <%= simple_form_for([@garden, @plant]) do |f| %>
         <%= f.input :name %>
+        <%= f.input :species %>
         <%= f.input :image_url %>
         <%= f.submit 'Save your plant', class: 'btn btn-primary' %>
       <% end %>
